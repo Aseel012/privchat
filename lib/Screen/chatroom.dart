@@ -171,99 +171,127 @@ class _ChatroomState extends State<Chatroom> {
     return WillPopScope(
       onWillPop: _confirmExit,
       child: Scaffold(
-      backgroundColor: const Color(0xFF211D2D),
-      appBar: AppBar(
         backgroundColor: const Color(0xFF211D2D),
-        iconTheme: const IconThemeData(color: Color(0xFFF2DFD8)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            final canLeave = await _confirmExit();
-            if (canLeave && mounted) {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(widget.roomCode,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF211D2D),
+          iconTheme: const IconThemeData(color: Color(0xFFF2DFD8)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              final canLeave = await _confirmExit();
+              if (canLeave && mounted) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.roomCode,
                 style: const TextStyle(
-                    color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-            Row(children: [
-              Container(
-                width: 7, height: 7,
-                margin: const EdgeInsets.only(right: 5),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _peerOnline ? Colors.greenAccent : Colors.grey,
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                _peerOnline
-                    ? "Connected"
-                    : widget.isHost ? "Waiting for friend..." : "Connecting...",
-                style: const TextStyle(color: Colors.white54, fontSize: 11),
-              ),
-            ]),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _messages.isEmpty
-                ? Center(
-              child: Text(
-                widget.isHost
-                    ? "Share your code and wait\nfor your friend to join"
-                    : "Connected! Say hello 👋",
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white38, fontSize: 14),
-              ),
-            )
-                : ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              itemCount: _messages.length,
-              itemBuilder: (_, i) => _bubble(_messages[i]),
-            ),
-          ),
-          Container(
-            color: const Color(0xFF1A1625),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(children: [
-              Expanded(
-                child: TextField(
-                  controller: _msgController,
-                  style: const TextStyle(color: Colors.white),
-                  textInputAction: TextInputAction.send,
-                  onSubmitted: (_) => _send(),
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: const Color(0xFF353839),
-                    hintText: "Message...",
-                    hintStyle: const TextStyle(color: Colors.white38),
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide.none,
+              Row(
+                children: [
+                  Container(
+                    width: 7,
+                    height: 7,
+                    margin: const EdgeInsets.only(right: 5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _peerOnline ? Colors.greenAccent : Colors.grey,
                     ),
                   ),
-                ),
+                  Text(
+                    _peerOnline
+                        ? "Connected"
+                        : widget.isHost
+                            ? "Waiting for friend..."
+                            : "Connecting...",
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 11,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              CircleAvatar(
-                backgroundColor: const Color(0xFF6C63FF),
-                child: IconButton(
-                  onPressed: _send,
-                  icon: const Icon(Icons.send, color: Colors.white, size: 20),
-                ),
-              ),
-            ]),
+            ],
           ),
-        ],
+        ),
+        body: Column(
+          children: [
+            Expanded(
+              child: _messages.isEmpty
+                  ? Center(
+                      child: Text(
+                        widget.isHost
+                            ? "Share your code and wait\nfor your friend to join"
+                            : "Connected! Say hello 👋",
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 14,
+                        ),
+                      ),
+                    )
+                  : ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      itemCount: _messages.length,
+                      itemBuilder: (_, i) => _bubble(_messages[i]),
+                    ),
+            ),
+            Container(
+              color: const Color(0xFF1A1625),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _msgController,
+                      style: const TextStyle(color: Colors.white),
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (_) => _send(),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0xFF353839),
+                        hintText: "Message...",
+                        hintStyle: const TextStyle(color: Colors.white38),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundColor: const Color(0xFF6C63FF),
+                    child: IconButton(
+                      onPressed: _send,
+                      icon: const Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
