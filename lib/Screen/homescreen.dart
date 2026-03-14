@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'chatscreen.dart';
 import '../utils/room_code.dart';
+import 'settings_screen.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
@@ -15,8 +16,23 @@ class Homescreen extends StatelessWidget {
         centerTitle: true,
         title: const Text(
           "PRIVCHAT",
-          style: TextStyle(color: Color(0xFFF2DFD8), fontSize: 22, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: Color(0xFFF2DFD8),
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: Color(0xFFF2DFD8)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: const Center(
         child: Column(

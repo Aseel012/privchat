@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import '../utils/room_code.dart';
+import '../services/settings_service.dart';
 import 'chat_service.dart';
 
 class ChatMessage {
@@ -25,10 +27,12 @@ class _ChatroomState extends State<Chatroom> {
   final ChatService _chat = ChatService.instance;
   bool _peerOnline = false;
   bool _roomClosed = false;
+  UserSettings? _settings;
 
   @override
   void initState() {
     super.initState();
+    _loadSettings();
 
     if (widget.isHost) {
       _chat.on('user_joined', (_) {
@@ -62,6 +66,23 @@ class _ChatroomState extends State<Chatroom> {
       _sysMsg("Chat ended. Room closed.");
       _showRoomClosedDialog();
     });
+  }
+
+  Future<void> _loadSettings() async {
+    final loaded = await SettingsService.load();
+    if (!mounted) return;
+    setState(() => _settings = loaded);
+    await _applyScreenshotPreference();
+  }
+
+  Future<void> _applyScreenshotPreference() async {
+    final s = _settings;
+    if (s == null) return;
+    if (s.blockScreenshots) {
+      await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+    } else {
+      await FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_SECURE);
+    }
   }
 
   @override
@@ -148,6 +169,7 @@ class _ChatroomState extends State<Chatroom> {
             onPressed: () {
               Navigator.of(context).pop(); // close dialog
               final newCode = generateRoomCode();
+              SettingsService.updateLastConnectedNow();
               Navigator.of(context)
                 ..pop() // leave current chatroom
                 ..push(
@@ -168,6 +190,8 @@ class _ChatroomState extends State<Chatroom> {
 
   @override
   Widget build(BuildContext context) {
+    final showOnline = _settings?.showOnlineStatus ?? true;
+
     return WillPopScope(
       onWillPop: _confirmExit,
       child: Scaffold(
@@ -197,26 +221,28 @@ class _ChatroomState extends State<Chatroom> {
               ),
               Row(
                 children: [
-                  Container(
-                    width: 7,
-                    height: 7,
-                    margin: const EdgeInsets.only(right: 5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _peerOnline ? Colors.greenAccent : Colors.grey,
+                  if (showOnline) ...[
+                    Container(
+                      width: 7,
+                      height: 7,
+                      margin: const EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _peerOnline ? Colors.greenAccent : Colors.grey,
+                      ),
                     ),
-                  ),
-                  Text(
-                    _peerOnline
-                        ? "Connected"
-                        : widget.isHost
-                            ? "Waiting for friend..."
-                            : "Connecting...",
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 11,
+                    Text(
+                      _peerOnline
+                          ? "Connected"
+                          : widget.isHost
+                              ? "Waiting for friend..."
+                              : "Connecting...",
+                      style: const TextStyle(
+                        color: Colors.white54,
+                        fontSize: 11,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ],
