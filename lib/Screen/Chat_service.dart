@@ -35,6 +35,7 @@ class ChatService {
           .build(),
     );
 
+
     _socket!.onConnect((_) {
       print('✅ ChatService connected: ${_socket!.id}');
       if (!completer.isCompleted) completer.complete(true);
@@ -110,6 +111,12 @@ class ChatService {
 
   void sendMessage(String room, String message) {
     _socket!.emit('send_message', {'room': room, 'message': message});
+  }
+
+  /// Inform the server that we intentionally left the room.
+  void leaveRoom(String room) {
+    if (!isConnected) return;
+    _socket!.emit('leave_room', room);
   }
 
   void on(String event, Function(dynamic) handler) {

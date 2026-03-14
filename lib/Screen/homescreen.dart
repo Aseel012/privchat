@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'chatscreen.dart';
+import '../utils/room_code.dart';
 
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
-
-  String _generateCode() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final random = Random();
-    return String.fromCharCodes(
-      Iterable.generate(6, (_) => chars.codeUnitAt(random.nextInt(chars.length))),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +34,7 @@ class Homescreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final code = _generateCode();
+          final code = generateRoomCode();
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => Chatscreen(roomCode: code)),

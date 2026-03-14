@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/room_code.dart';
 import 'chat_service.dart';
 
 class ChatMessage {
@@ -23,6 +24,7 @@ class _ChatroomState extends State<Chatroom> {
   final List<ChatMessage> _messages = [];
   final ChatService _chat = ChatService.instance;
   bool _peerOnline = false;
+  bool _roomClosed = false;
 
   @override
   void initState() {
@@ -50,6 +52,16 @@ class _ChatroomState extends State<Chatroom> {
       setState(() => _peerOnline = false);
       _sysMsg("Friend left the chat");
     });
+
+    _chat.on('room_closed', (data) {
+      if (!mounted) return;
+      setState(() {
+        _peerOnline = false;
+        _roomClosed = true;
+      });
+      _sysMsg("Chat ended. Room closed.");
+      _showRoomClosedDialog();
+    });
   }
 
   @override
@@ -58,6 +70,7 @@ class _ChatroomState extends State<Chatroom> {
     _chat.off('user_joined');
     _chat.off('receive_message');
     _chat.off('user_left');
+    _chat.off('room_closed');
     _msgController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -89,13 +102,88 @@ class _ChatroomState extends State<Chatroom> {
     _scrollDown();
   }
 
+  Future<bool> _confirmExit() async {
+    if (_roomClosed) return true;
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Leave chat?"),
+        content: const Text(
+          "Once you leave, this private room will be closed and messages will not be stored.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text("Leave"),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      _chat.leaveRoom(widget.roomCode);
+      return true;
+    }
+    return false;
+  }
+
+  void _showRoomClosedDialog() {
+    if (!mounted) return;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text("Chat ended"),
+        content: const Text(
+          "Your friend has left. This room is closed and cannot be reused.\n\n"
+          "A new room code will be created for your next chat.",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // close dialog
+              final newCode = generateRoomCode();
+              Navigator.of(context)
+                ..pop() // leave current chatroom
+                ..push(
+                  MaterialPageRoute(
+                    builder: (_) => Chatroom(
+                      roomCode: newCode,
+                      isHost: widget.isHost,
+                    ),
+                  ),
+                );
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: _confirmExit,
+      child: Scaffold(
       backgroundColor: const Color(0xFF211D2D),
       appBar: AppBar(
         backgroundColor: const Color(0xFF211D2D),
         iconTheme: const IconThemeData(color: Color(0xFFF2DFD8)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            final canLeave = await _confirmExit();
+            if (canLeave && mounted) {
+              Navigator.of(context).pop();
+            }
+          },
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
