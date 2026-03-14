@@ -11,18 +11,8 @@ class ChatService {
   IO.Socket? _socket;
 
   // ✅ PRODUCTION:
-  // Set this to your deployed socket server, e.g.:
-  //   'https://your-chat-backend.example.com'
-  //
-  // ✅ LOCAL TESTING:
-  // Use your PC IP **with port 3000**, e.g.:
-  //   'http://192.168.X.X:3000'
-  //
-  // NOTE: Missing ":3000" here will cause the app
-  // to stay stuck on "Setting up room..." because
-  // it will try to connect on port 80 where your
-  // Node server is not listening.
-  static const String serverUrl = 'http://192.168.1.8:3000';
+  // Deployed Render socket server
+  static const String serverUrl = 'https://privchat-q0lc.onrender.com';
 
   bool get isConnected => _socket?.connected ?? false;
 
@@ -36,9 +26,11 @@ class ChatService {
       serverUrl,
       IO.OptionBuilder()
           .setTransports(['websocket', 'polling'])
+          // Render free instances can be cold and slow to wake;
+          // allow more time and retries to avoid spurious failures.
           .disableAutoConnect()
-          .setTimeout(8000)
-          .setReconnectionAttempts(5)
+          .setTimeout(20000)
+          .setReconnectionAttempts(10)
           .setReconnectionDelay(2000)
           .build(),
     );
@@ -58,7 +50,7 @@ class ChatService {
 
     _socket!.connect();
 
-    Future.delayed(const Duration(seconds: 8), () {
+    Future.delayed(const Duration(seconds: 20), () {
       if (!completer.isCompleted) completer.complete(false);
     });
 
@@ -83,6 +75,14 @@ class ChatService {
 
   /// Guest: join a room — returns null on success, error string on failure
   Future<String?> joinRoom(String room) async {
+    // Ensure we are connected before trying to join
+    if (!isConnected) {
+      final ok = await connect();
+      if (!ok) {
+        return 'Unable to reach chat server. Please try again in a moment.';
+      }
+    }
+
     final completer = Completer<String?>();
 
     final timer = Timer(const Duration(seconds: 8), () {
