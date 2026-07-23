@@ -8,6 +8,7 @@ class Splashscreen extends StatefulWidget {
   State<Splashscreen> createState() => _SplashscreenState();
 }
 
+
 class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
@@ -15,6 +16,7 @@ class _SplashscreenState extends State<Splashscreen> {
     splashTimer();
   }
 
+  
   void splashTimer() async {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
@@ -24,6 +26,7 @@ class _SplashscreenState extends State<Splashscreen> {
     );
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
