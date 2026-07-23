@@ -6,6 +6,7 @@ import 'settings_screen.dart';
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +35,7 @@ class Homescreen extends StatelessWidget {
           ),
         ],
       ),
+      
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -47,6 +49,7 @@ class Homescreen extends StatelessWidget {
                 style: TextStyle(color: Colors.white38, fontSize: 14)),
           ],
         ),
+        
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
