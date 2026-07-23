@@ -10,6 +10,7 @@ class ChatMessage {
   ChatMessage({required this.text, required this.isMine});
 }
 
+
 class Chatroom extends StatefulWidget {
   final String roomCode;
   final bool isHost;
@@ -29,6 +30,7 @@ class _ChatroomState extends State<Chatroom> {
   bool _roomClosed = false;
   UserSettings? _settings;
 
+  
   @override
   void initState() {
     super.initState();
@@ -51,6 +53,7 @@ class _ChatroomState extends State<Chatroom> {
       _scrollDown();
     });
 
+    
     _chat.on('user_left', (_) {
       if (!mounted) return;
       setState(() => _peerOnline = false);
