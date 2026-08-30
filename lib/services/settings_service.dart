@@ -11,7 +11,6 @@ class UserSettings {
 
   
   const UserSettings({
-    
     required this.blockScreenshots,
     required this.name,
     required this.allowImageDownload,
