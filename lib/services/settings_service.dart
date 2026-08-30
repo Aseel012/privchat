@@ -9,9 +9,11 @@ class UserSettings {
   final bool notificationsEnabled;
   final String? lastConnectedSummary;
 
+  
   const UserSettings({
-    required this.name,
+    
     required this.blockScreenshots,
+    required this.name,
     required this.allowImageDownload,
     required this.showLastSeen,
     required this.showOnlineStatus,
