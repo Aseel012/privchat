@@ -44,9 +44,10 @@ class UserSettings {
 class SettingsService {
   static const _keyName = 'user_name';
   static const _keyBlockScreenshots = 'block_screenshots';
+  
+  static const _keyShowOnlineStatus = 'show_online_status';
   static const _keyAllowImageDownload = 'allow_image_download';
   static const _keyShowLastSeen = 'show_last_seen';
-  static const _keyShowOnlineStatus = 'show_online_status';
   static const _keyNotifications = 'notifications_enabled';
   static const _keyLastConnectedSummary = 'last_connected_summary';
 
