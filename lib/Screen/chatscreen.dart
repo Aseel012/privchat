@@ -26,7 +26,6 @@ class _ChatscreenState extends State<Chatscreen> {
   }
 
   Future<void> _registerRoom() async {
-    // Reset state
     setState(() {
       _roomReady = false;
       _roomError = null;
