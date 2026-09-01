@@ -15,8 +15,8 @@ class _ChatscreenState extends State<Chatscreen> {
   final TextEditingController _joinController = TextEditingController();
   final ChatService _chat = ChatService.instance;
 
-  bool _roomReady = false;
   bool _isJoining = false;
+  bool _roomReady = false;
   String? _roomError;
 
   @override
