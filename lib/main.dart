@@ -4,7 +4,6 @@ import 'Screen/chat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Connect socket once at app start — stays alive across all screens
   await ChatService.instance.connect();
   runApp(const MyApp());
 }
@@ -12,6 +11,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
