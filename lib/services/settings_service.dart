@@ -12,8 +12,8 @@ class UserSettings {
   
   const UserSettings({
     required this.blockScreenshots,
+    required this.blockScreenshots,
     required this.name,
-    required this.allowImageDownload,
     required this.showLastSeen,
     required this.showOnlineStatus,
     required this.notificationsEnabled,
