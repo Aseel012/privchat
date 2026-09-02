@@ -31,8 +31,8 @@ class UserSettings {
   }) {
     return UserSettings(
       name: name ?? this.name,
-      blockScreenshots: blockScreenshots ?? this.blockScreenshots,
       allowImageDownload: allowImageDownload ?? this.allowImageDownload,
+      blockScreenshots: blockScreenshots ?? this.blockScreenshots,
       showLastSeen: showLastSeen ?? this.showLastSeen,
       showOnlineStatus: showOnlineStatus ?? this.showOnlineStatus,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
