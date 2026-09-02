@@ -89,8 +89,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const Text(
                   'Privacy & Safety',
                   style: TextStyle(
-                    color: Color(0xFFF2DFD8),
                     fontSize: 16,
+                    color: Color(0xFFF2DFD8),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
