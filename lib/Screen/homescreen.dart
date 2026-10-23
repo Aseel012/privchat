@@ -58,6 +58,7 @@ class Homescreen extends StatelessWidget {
             MaterialPageRoute(builder: (_) => Chatscreen(roomCode: code)),
           );
         },
+        
         backgroundColor: const Color(0xFF6C63FF),
         child: const Icon(Icons.add, color: Colors.white),
       ),
