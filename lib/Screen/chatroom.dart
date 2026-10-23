@@ -10,10 +10,10 @@ class ChatMessage {
   ChatMessage({required this.text, required this.isMine});
 }
 
-
 class Chatroom extends StatefulWidget {
-  final String roomCode;
   final bool isHost;
+  
+  final String roomCode;
 
   const Chatroom({super.key, required this.roomCode, required this.isHost});
 
