@@ -10,7 +10,6 @@ class Chatscreen extends StatefulWidget {
   @override
   State<Chatscreen> createState() => _ChatscreenState();
 }
-
 class _ChatscreenState extends State<Chatscreen> {
   final TextEditingController _joinController = TextEditingController();
   final ChatService _chat = ChatService.instance;
