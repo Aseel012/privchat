@@ -8,6 +8,7 @@ class ChatService {
   static final ChatService instance = ChatService._internal();
   factory ChatService() => instance;
 
+  
   IO.Socket? _socket;
 
   // ✅ PRODUCTION:
