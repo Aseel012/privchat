@@ -29,7 +29,7 @@ class _ChatroomState extends State<Chatroom> {
   bool _roomClosed = false;
   UserSettings? _settings;
 
-  
+
   @override
   void initState() {
     super.initState();
