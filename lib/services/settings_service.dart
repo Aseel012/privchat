@@ -53,8 +53,8 @@ class SettingsService {
     name: '',
     blockScreenshots: false,
     allowImageDownload: true,
-    showLastSeen: true,
     showOnlineStatus: true,
+    showLastSeen: true,
     notificationsEnabled: true,
     lastConnectedSummary: null,
   );
