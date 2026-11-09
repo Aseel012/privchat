@@ -8,7 +8,6 @@ class UserSettings {
   final bool showOnlineStatus;
   final bool notificationsEnabled;
   final String? lastConnectedSummary;
-
   
   const UserSettings({
     required this.blockScreenshots,
