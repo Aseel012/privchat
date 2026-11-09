@@ -8,4 +8,3 @@ String generateRoomCode() {
     Iterable.generate(6, (_) => chars.codeUnitAt(random.nextInt(chars.length))),
   );
 }
-
