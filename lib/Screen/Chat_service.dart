@@ -35,7 +35,6 @@ class ChatService {
           .build(),
     );
 
-
     _socket!.onConnect((_) {
       print('✅ ChatService connected: ${_socket!.id}');
       if (!completer.isCompleted) completer.complete(true);
