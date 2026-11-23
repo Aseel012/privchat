@@ -28,6 +28,7 @@ class UserSettings {
     bool? notificationsEnabled,
     String? lastConnectedSummary,
   }) {
+    
     return UserSettings(
       name: name ?? this.name,
       allowImageDownload: allowImageDownload ?? this.allowImageDownload,
